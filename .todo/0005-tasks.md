@@ -80,7 +80,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.4] Modos de Ocultação: Modo Falso e Modo Ghost com Timer
+### [x] [1.4] Modos de Ocultação: Modo Falso e Modo Ghost com Timer
 
 **Requirement:** FR-003
 **Depends on:** 0004/1.4
@@ -97,7 +97,7 @@ N/A
 1. Implementar endpoints de pânico e ativação de Ghost mode com timer em `src/security.ts`.
 
 **ACs:**
-- [ ] `bun test tests/security_modes.test.ts` — verifies panic disguise and ghost state with exit code 0.
+- [x] `bun test tests/security_modes.test.ts` — verifies panic disguise and ghost state with exit code 0.
 
 **Visual:** N/A
 
