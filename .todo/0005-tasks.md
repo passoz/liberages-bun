@@ -218,7 +218,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.10] Contos Eróticos e Álbuns Expandidos
+### [x] [1.10] Contos Eróticos e Álbuns Expandidos
 
 **Requirement:** FR-008
 **Depends on:** 0004/1.2
@@ -235,7 +235,7 @@ N/A
 1. Implementar catálogo de contos e regras de permissão de publicação em `src/stories.ts`.
 
 **ACs:**
-- [ ] `bun test tests/stories.test.ts` — verifies publishing privileges for Premium users with exit code 0.
+- [x] `bun test tests/stories.test.ts` — verifies publishing privileges for Premium users with exit code 0.
 
 **Visual:** N/A
 
