@@ -35,7 +35,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.2] Contas de Casal Unificadas (Couple Account Type)
+### [x] [1.2] Contas de Casal Unificadas (Couple Account Type)
 
 **Requirement:** FR-002
 **Depends on:** 1.1
@@ -52,7 +52,7 @@ N/A
 1. Estruturar modelo e regras de conta `couple` em `src/accounts.ts`.
 
 **ACs:**
-- [ ] `bun test tests/accounts.test.ts` — executes account type assertions with exit code 0.
+- [x] `bun test tests/accounts.test.ts` — executes account type assertions with exit code 0.
 
 **Visual:** N/A
 
