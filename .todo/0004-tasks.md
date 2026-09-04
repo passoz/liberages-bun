@@ -127,7 +127,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.6] Fotolog com Expiração de 24h e Blur Facial
+### [x] [1.6] Fotolog com Expiração de 24h e Blur Facial
 
 **Requirement:** FR-005
 **Depends on:** 1.1
@@ -144,7 +144,7 @@ N/A
 1. Implementar módulo do Fotolog com TTL de 24h e regra de blur facial padrão em `src/fotolog.ts`.
 
 **ACs:**
-- [ ] `bun test tests/fotolog.test.ts` — verifies Fotolog lifecycle and blur flag with exit code 0.
+- [x] `bun test tests/fotolog.test.ts` — verifies Fotolog lifecycle and blur flag with exit code 0.
 
 **Visual:** N/A
 
