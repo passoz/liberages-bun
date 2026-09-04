@@ -27,7 +27,7 @@ securityApp.post("/api/panic", (c) => {
   }, 200);
 });
 
-// SPEC section 7.3: Modo Ghost
+// SPEC section 7.3: Modo Ghost com Temporizador
 securityApp.post("/api/ghost", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { userId, durationMinutes, expiresAt: explicitExpiresAt } = body;
@@ -49,7 +49,13 @@ securityApp.post("/api/ghost", async (c) => {
   }, 200);
 });
 
-// Baseline stub for Task 1.5: does NOT check timer expiration (stays ghost permanently)
+// Automatic restoration when timer expires
 export function isUserGhost(userId: string): boolean {
-  return ghostUsersStore.has(userId);
+  const expiresAt = ghostUsersStore.get(userId);
+  if (!expiresAt) return false;
+  if (Date.now() > expiresAt) {
+    ghostUsersStore.delete(userId);
+    return false;
+  }
+  return true;
 }

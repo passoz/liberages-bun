@@ -103,7 +103,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.5] Restauração Automática de Visibilidade Pós-Timer Ghost
+### [x] [1.5] Restauração Automática de Visibilidade Pós-Timer Ghost
 
 **Requirement:** EC-001
 **Depends on:** 1.4
@@ -120,7 +120,7 @@ N/A
 1. Adicionar checagem de decaimento do timer Ghost nas consultas de presença em `src/security.ts`.
 
 **ACs:**
-- [ ] `bun test tests/security_ghost_ttl.test.ts` — confirms visibility restores to normal after timer with exit code 0.
+- [x] `bun test tests/security_ghost_ttl.test.ts` — confirms visibility restores to normal after timer with exit code 0.
 
 **Visual:** N/A
 
