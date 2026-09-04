@@ -59,7 +59,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.3] Proteção de Tentativas em Login (Throttle)
+### [x] [1.3] Proteção de Tentativas em Login (Throttle)
 
 **Requirement:** EC-001
 **Depends on:** 1.1
@@ -76,7 +76,7 @@ N/A
 1. Instanciar block na rota Auth que impõe max tries, cacheando em memória IP/session limit.
 
 **ACs:**
-- [ ] `bun test tests/throttle.test.ts` — returns HTTP 429 after threshold checks, exit code 0.
+- [x] `bun test tests/throttle.test.ts` — returns HTTP 429 after threshold checks, exit code 0.
 
 **Visual:** N/A
 
