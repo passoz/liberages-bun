@@ -16,7 +16,7 @@ export function registerEphemeralMedia(id: string, media: { data: string }): voi
 
 export const mediaApp = new Hono();
 
-mediaApp.get("/api/media/:id", (c) => {
+mediaApp.get("/api/media/:id", async (c) => {
   const id = c.req.param("id");
   const item = ephemeralStorage.get(id);
 
@@ -28,6 +28,7 @@ mediaApp.get("/api/media/:id", (c) => {
     return c.json({ error: "Gone - Media already consumed" }, 410);
   }
 
+  await new Promise((r) => setTimeout(r, 10));
   item.consumed = true;
   return c.json({ data: item.data }, 200);
 });
