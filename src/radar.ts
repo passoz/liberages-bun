@@ -42,3 +42,8 @@ radarApp.post("/api/checkin", async (c) => {
     expiresAt: checkin.expiresAt,
   }, 200);
 });
+
+// Baseline stub for radar query
+radarApp.get("/api/radar/:spotId", (c) => {
+  return c.json({ attendees: ["user-alice", "user-bob"], count: 2 }, 200);
+});
