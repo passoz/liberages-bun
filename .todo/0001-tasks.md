@@ -11,7 +11,7 @@
 ## Global gates
 N/A
 
-### [ ] [1.1] Rota de Login e Throttle PIN Base via Hono
+### [x] [1.1] Rota de Login e Throttle PIN Base via Hono
 
 **Requirement:** FR-001
 **Depends on:** none
@@ -29,7 +29,7 @@ N/A
 2. Adicionar Endpoint de PIN Hono com setup de JWT issue (hono/jwt) e setup middleware cookie response.
 
 **ACs:**
-- [ ] `bun test tests/auth.test.ts` — executes endpoints successfully and returns exit code 0.
+- [x] `bun test tests/auth.test.ts` — executes endpoints successfully and returns exit code 0.
 
 **Visual:** N/A
 
