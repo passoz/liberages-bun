@@ -1,7 +1,7 @@
 {
   "version": 1,
   "work_id": "0004",
-  "state": "planned",
+  "state": "completed",
   "origin": {
     "type": "local",
     "reference": null
@@ -17,5 +17,5 @@
     "attestations": ".todo/attestations/0004"
   },
   "created_at": "2026-09-04T18:27:05.732Z",
-  "updated_at": "2026-09-04T18:32:45.708Z"
+  "updated_at": "2026-09-04T19:02:31.364Z"
 }
