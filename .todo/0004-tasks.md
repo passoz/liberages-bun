@@ -219,7 +219,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.10] Sugestão de Date via Bucket List
+### [x] [1.10] Sugestão de Date via Bucket List
 
 **Requirement:** FR-008
 **Depends on:** 1.8
@@ -236,7 +236,7 @@ N/A
 1. Criar comparador de Bucket List e gerador de sugestão de date em `src/bucket_list.ts`.
 
 **ACs:**
-- [ ] `bun test tests/bucket_list.test.ts` — verifies icebreaker date suggestion with exit code 0.
+- [x] `bun test tests/bucket_list.test.ts` — verifies icebreaker date suggestion with exit code 0.
 
 **Visual:** N/A
 
