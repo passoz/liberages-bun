@@ -195,7 +195,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.9] Caça ao Tesouro B2B Geolocalizada
+### [x] [1.9] Caça ao Tesouro B2B Geolocalizada
 
 **Requirement:** FR-007
 **Depends on:** 0004/1.11
@@ -212,7 +212,7 @@ N/A
 1. Implementar mecânica de resgate de caça ao tesouro integrada à Token Wallet em `src/b2b.ts`.
 
 **ACs:**
-- [ ] `bun test tests/b2b_treasure.test.ts` — verifies treasure claim and wallet balance update with exit code 0.
+- [x] `bun test tests/b2b_treasure.test.ts` — verifies treasure claim and wallet balance update with exit code 0.
 
 **Visual:** N/A
 
