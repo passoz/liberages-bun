@@ -57,7 +57,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.3] Marca d'Água Dinâmica com Hash do Visualizador
+### [x] [1.3] Marca d'Água Dinâmica com Hash do Visualizador
 
 **Requirement:** FR-002
 **Depends on:** 0004/1.6
@@ -74,7 +74,7 @@ N/A
 1. Criar middleware de injeção de watermark com hash do usuário em `src/security.ts`.
 
 **ACs:**
-- [ ] `bun test tests/security_watermark.test.ts` — confirms watermark metadata presence with exit code 0.
+- [x] `bun test tests/security_watermark.test.ts` — confirms watermark metadata presence with exit code 0.
 
 **Visual:** N/A
 
