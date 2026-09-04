@@ -11,7 +11,7 @@
 ## Global gates
 N/A
 
-### [ ] [1.1] Mecanismo de Mídia Efêmera e Selfie Destrutível
+### [x] [1.1] Mecanismo de Mídia Efêmera e Selfie Destrutível
 
 **Requirement:** FR-001
 **Depends on:** 0001/1.1
@@ -29,7 +29,7 @@ N/A
 2. Servir rota GET `/api/media/:id` que invalida o recurso após o primeiro consumo e retorna 410 nos acessos seguintes.
 
 **ACs:**
-- [ ] `bun test tests/media.test.ts` — returns HTTP 200 on first access and HTTP 410 on subsequent request, exit code 0.
+- [x] `bun test tests/media.test.ts` — returns HTTP 200 on first access and HTTP 410 on subsequent request, exit code 0.
 
 **Visual:** N/A
 
