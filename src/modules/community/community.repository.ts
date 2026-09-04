@@ -17,6 +17,10 @@ export class CommunityRepository {
     return post;
   }
 
+  listSpacePosts() {
+    return db.select().from(spacePosts).all();
+  }
+
   createJuryVote(disputeId: string, userId: string, vote: string) {
     const v = {
       id: generateId(),

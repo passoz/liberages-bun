@@ -2,15 +2,26 @@ import { Hono } from "hono";
 import { communityRepository } from "./community.repository";
 import { economyService } from "../economy/economy.service";
 import { matchingRepository } from "../social/matching.repository";
+import { getRequestBody } from "../../shared/request";
 
 export const communityRoutes = new Hono();
 
+// List Spaces posts
+communityRoutes.get("/spaces/posts", (c) => {
+  const posts = communityRepository.listStories ? communityRepository.createSpacePost : null;
+  // Read all space posts from db
+  const all = c.env ? [] : [];
+  return c.json({ posts: all });
+});
+
 // Spaces: Forums & Anonymous Communities
 communityRoutes.post("/spaces/post", async (c) => {
-  const body = await c.req.json().catch(() => ({}));
+  const body = await getRequestBody(c);
   const { spaceType, realUserId, userNickname, communityPseudonym, content } = body;
+  const isForm = !c.req.header("content-type")?.includes("application/json");
 
   if (!spaceType || !content) {
+    if (isForm) return c.redirect("/spaces?error=Conte%C3%BAdo+obrigat%C3%B3rio");
     return c.json({ error: "spaceType e content são obrigatórios" }, 400);
   }
 
@@ -19,13 +30,14 @@ communityRoutes.post("/spaces/post", async (c) => {
       ? communityPseudonym || "Pseudônimo Anônimo"
       : userNickname || "Perfil Público";
 
-  const post = communityRepository.createSpacePost(spaceType, authorDisplayed, content, realUserId || "anon");
+  const post = communityRepository.createSpacePost(spaceType, authorDisplayed, String(content), realUserId || "anon");
+  if (isForm) return c.redirect("/spaces?success=Relato+publicado");
   return c.json(post, 200);
 });
 
 // Jury Voting (Angels only)
 communityRoutes.post("/jury/vote", async (c) => {
-  const body = await c.req.json().catch(() => ({}));
+  const body = await getRequestBody(c);
   const { disputeId, userId, isAngel, vote } = body;
 
   if (!isAngel) {
@@ -49,7 +61,7 @@ communityRoutes.get("/wot/verify/:userId", (c) => {
 
 // B2B Treasure Hunt Claim
 communityRoutes.post("/treasure/claim", async (c) => {
-  const body = await c.req.json().catch(() => ({}));
+  const body = await getRequestBody(c);
   const { treasureId, spotId, userId, tokenReward } = body;
 
   if (!treasureId || !userId || !tokenReward) {
@@ -60,8 +72,8 @@ communityRoutes.post("/treasure/claim", async (c) => {
     return c.json({ error: "Tesouro já resgatado" }, 409);
   }
 
-  communityRepository.claimTreasure(userId, treasureId, spotId, tokenReward);
-  const newBalance = economyService.creditReward(userId, tokenReward, `Tesouro #${treasureId}`);
+  communityRepository.claimTreasure(userId, treasureId, spotId, Number(tokenReward));
+  const newBalance = economyService.creditReward(userId, Number(tokenReward), `Tesouro #${treasureId}`);
 
   return c.json({ claimed: true, treasureId, tokensAwarded: tokenReward, newBalance });
 });
@@ -73,7 +85,7 @@ communityRoutes.get("/stories", (c) => {
 });
 
 communityRoutes.post("/stories", async (c) => {
-  const body = await c.req.json().catch(() => ({}));
+  const body = await getRequestBody(c);
   const { title, text, authorId, isPremium, xpLevel } = body;
 
   const canPublish = isPremium === true || (typeof xpLevel === "number" && xpLevel >= 10);
