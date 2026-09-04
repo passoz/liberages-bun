@@ -31,7 +31,20 @@ governanceApp.post("/api/jury/vote", async (c) => {
   return c.json({ success: true, message: "Voto registrado com sucesso", vote: voteEntry }, 200);
 });
 
-// Baseline stub for Task 1.8: Web of Trust
-export function checkWebOfTrustVerification(realFriendsCount: number): { isVerified: boolean; badgeColor?: string } {
+// SPEC section 9.3: Web of Trust (Verificado)
+// O cobiçado selo azul exige que 4 usuários reais atestem que a pessoa existe fisicamente (Friendship category: real).
+export function checkWebOfTrustVerification(realFriendsCount: number): {
+  isVerified: boolean;
+  badgeColor?: string;
+  verifiedAt?: number;
+} {
+  if (realFriendsCount >= 4) {
+    return {
+      isVerified: true,
+      badgeColor: "blue",
+      verifiedAt: Date.now(),
+    };
+  }
+
   return { isVerified: false };
 }

@@ -172,7 +172,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.8] Web of Trust: Selo Verificado por 4 Amigos Reais
+### [x] [1.8] Web of Trust: Selo Verificado por 4 Amigos Reais
 
 **Requirement:** FR-006
 **Depends on:** 0004/1.8
@@ -189,7 +189,7 @@ N/A
 1. Implementar cálculo de confiança Web of Trust em `src/governance.ts`.
 
 **ACs:**
-- [ ] `bun test tests/governance_wot.test.ts` — verifies blue badge grant threshold with exit code 0.
+- [x] `bun test tests/governance_wot.test.ts` — verifies blue badge grant threshold with exit code 0.
 
 **Visual:** N/A
 
