@@ -82,7 +82,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.4] Encerramento Graceful com Tempo Limite (SIGTERM)
+### [x] [1.4] Encerramento Graceful com Tempo Limite (SIGTERM)
 
 **Requirement:** QR-001
 **Depends on:** 1.1
@@ -99,7 +99,7 @@ N/A
 1. Ouvinte `process.on('SIGTERM')` injeta uma Promise hook encarregada de fechar os sockets db/web em timeout 10s.
 
 **ACs:**
-- [ ] `bun test tests/graceful.test.ts` — exits safely passing grace shutdown assertions, exit code 0.
+- [x] `bun test tests/graceful.test.ts` — exits safely passing grace shutdown assertions, exit code 0.
 
 **Visual:** N/A
 
