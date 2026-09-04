@@ -34,7 +34,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.2] Entrega Privada e Isolamento de Mensagens
+### [x] [1.2] Entrega Privada e Isolamento de Mensagens
 
 **Requirement:** SC-001
 **Depends on:** 1.1
@@ -51,7 +51,7 @@ N/A
 1. Adicionar restrição rigorosa de autorização por participante na leitura de conversas em `src/chat.ts`.
 
 **ACs:**
-- [ ] `bun test tests/chat_privacy.test.ts` — rejects third-party access with HTTP 403 and exit code 0.
+- [x] `bun test tests/chat_privacy.test.ts` — rejects third-party access with HTTP 403 and exit code 0.
 
 **Visual:** N/A
 

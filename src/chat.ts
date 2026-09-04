@@ -45,7 +45,21 @@ chatApp.post("/api/chat/messages", async (c) => {
   return c.json({ success: true, message: msg }, 200);
 });
 
-// Baseline stub for conversation reading: does not check requester authorization
+// SPEC section 7.1: Message isolation - only conversation participants can read
 chatApp.get("/api/chat/messages/:userA/:userB", (c) => {
-  return c.json({ messages: [] }, 200);
+  const userA = c.req.param("userA");
+  const userB = c.req.param("userB");
+  const requester = c.req.header("x-user-id");
+
+  if (!requester || (requester !== userA && requester !== userB)) {
+    return c.json({ error: "Acesso não autorizado à conversa privada" }, 403);
+  }
+
+  const conversation = messagesStore.filter(
+    (m) =>
+      (m.from === userA && m.to === userB) ||
+      (m.from === userB && m.to === userA)
+  );
+
+  return c.json({ messages: conversation }, 200);
 });
