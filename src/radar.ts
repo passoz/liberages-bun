@@ -43,7 +43,19 @@ radarApp.post("/api/checkin", async (c) => {
   }, 200);
 });
 
-// Baseline stub for radar query
+// SPEC section 4.2 & BR-003: Radar is strictly anonymous ("X pessoas no local Y")
+// Never reveals attendee identities or coordinates.
 radarApp.get("/api/radar/:spotId", (c) => {
-  return c.json({ attendees: ["user-alice", "user-bob"], count: 2 }, 200);
+  const spotId = c.req.param("spotId");
+  const now = Date.now();
+
+  const active = checkinsStore.filter(
+    (chk) => chk.spotId === spotId && chk.expiresAt > now
+  );
+
+  return c.json({
+    spotId,
+    activeCount: active.length,
+    label: `${active.length} pessoas no local`,
+  }, 200);
 });

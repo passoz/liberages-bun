@@ -81,7 +81,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.4] Radar Anônimo por Localidade
+### [x] [1.4] Radar Anônimo por Localidade
 
 **Requirement:** FR-004
 **Depends on:** 1.3
@@ -98,7 +98,7 @@ N/A
 1. Implementar agregação anônima no handler do radar em `src/radar.ts`.
 
 **ACs:**
-- [ ] `bun test tests/radar_anonymous.test.ts` — verifies aggregated count without identities with exit code 0.
+- [x] `bun test tests/radar_anonymous.test.ts` — verifies aggregated count without identities with exit code 0.
 
 **Visual:** N/A
 
