@@ -150,7 +150,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.7] Deck de Swipe por Geodistância e Fetiches
+### [x] [1.7] Deck de Swipe por Geodistância e Fetiches
 
 **Requirement:** FR-006
 **Depends on:** 1.2
@@ -167,7 +167,7 @@ N/A
 1. Implementar algoritmo de ranking do deck em `src/matching.ts`.
 
 **ACs:**
-- [ ] `bun test tests/matching_deck.test.ts` — returns correctly ordered swipe candidates with exit code 0.
+- [x] `bun test tests/matching_deck.test.ts` — returns correctly ordered swipe candidates with exit code 0.
 
 **Visual:** N/A
 
