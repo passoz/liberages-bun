@@ -58,7 +58,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.3] Catálogo de Locais e Check-in com TTL Obrigatório
+### [x] [1.3] Catálogo de Locais e Check-in com TTL Obrigatório
 
 **Requirement:** FR-003
 **Depends on:** 1.1
@@ -75,7 +75,7 @@ N/A
 1. Criar repositório em memória e endpoints de check-in com validação de TTL em `src/radar.ts`.
 
 **ACs:**
-- [ ] `bun test tests/radar_checkin.test.ts` — records check-in with enforced TTL with exit code 0.
+- [x] `bun test tests/radar_checkin.test.ts` — records check-in with enforced TTL with exit code 0.
 
 **Visual:** N/A
 
