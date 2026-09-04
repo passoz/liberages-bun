@@ -104,7 +104,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.5] Expiração Automática de Check-in por TTL no Radar
+### [x] [1.5] Expiração Automática de Check-in por TTL no Radar
 
 **Requirement:** EC-001
 **Depends on:** 1.4
@@ -121,7 +121,7 @@ N/A
 1. Filtrar registros com `expiresAt <= now` nas consultas do radar em `src/radar.ts`.
 
 **ACs:**
-- [ ] `bun test tests/radar_ttl.test.ts` — verifies expired records drop from count with exit code 0.
+- [x] `bun test tests/radar_ttl.test.ts` — verifies expired records drop from count with exit code 0.
 
 **Visual:** N/A
 

@@ -43,14 +43,15 @@ radarApp.post("/api/checkin", async (c) => {
   }, 200);
 });
 
-// Baseline stub for Task 1.5: does NOT filter out expired records
+// Filter active checkins excluding expired ones
 radarApp.get("/api/radar/:spotId", (c) => {
   const spotId = c.req.param("spotId");
-  const all = checkinsStore.filter((chk) => chk.spotId === spotId);
+  const now = Date.now();
+  const active = checkinsStore.filter((chk) => chk.spotId === spotId && chk.expiresAt > now);
 
   return c.json({
     spotId,
-    activeCount: all.length,
-    label: `${all.length} pessoas no local`,
+    activeCount: active.length,
+    label: `${active.length} pessoas no local`,
   }, 200);
 });
