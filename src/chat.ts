@@ -44,3 +44,8 @@ chatApp.post("/api/chat/messages", async (c) => {
   messagesStore.push(msg);
   return c.json({ success: true, message: msg }, 200);
 });
+
+// Baseline stub for conversation reading: does not check requester authorization
+chatApp.get("/api/chat/messages/:userA/:userB", (c) => {
+  return c.json({ messages: [] }, 200);
+});
