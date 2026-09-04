@@ -35,7 +35,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.2] Acesso Confirmado Visualmente via Home Dashboard SSR
+### [x] [1.2] Acesso Confirmado Visualmente via Home Dashboard SSR
 
 **Requirement:** SC-001
 **Depends on:** 1.1
@@ -53,7 +53,7 @@ N/A
 2. Servir Rota html base dependente de autenticação.
 
 **ACs:**
-- [ ] `bun test tests/ssr.test.ts` — returns rendered HTML with HTTP 200 and exit code 0.
+- [x] `bun test tests/ssr.test.ts` — returns rendered HTML with HTTP 200 and exit code 0.
 
 **Visual:** N/A
 
