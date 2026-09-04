@@ -1,0 +1,12 @@
+bun
+drizzle
+sqlite (driver do bun)
+hono
+hono jsx templates
+uuidv7
+ddd+clean arch (nao estrito mas com adapters interfaces e repositories)
+monolito modular
+
+novo:
+codigo, rotas e nomenclaturas totalmente em ingles
+ui em i18n pt-br

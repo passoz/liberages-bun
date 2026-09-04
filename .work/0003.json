@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "work_id": "0003",
+  "state": "plan_pending",
+  "origin": {
+    "type": "local",
+    "reference": null
+  },
+  "artifacts": {
+    "manifest": ".work/0003.json",
+    "source": ".sources/0003-local.md",
+    "prompt": ".prompts/0003-change.md",
+    "plan": ".todo/0003-tasks.md",
+    "evidence": ".todo/evidence/0003",
+    "diagnostics": ".todo/diagnostics/0003",
+    "screenshots": ".todo/screenshots/0003",
+    "attestations": ".todo/attestations/0003"
+  },
+  "created_at": "2026-09-04T16:06:27.664Z",
+  "updated_at": "2026-09-04T16:06:27.664Z"
+}
