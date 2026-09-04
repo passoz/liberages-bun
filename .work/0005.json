@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "work_id": "0005",
+  "state": "planned",
+  "origin": {
+    "type": "local",
+    "reference": null
+  },
+  "artifacts": {
+    "manifest": ".work/0005.json",
+    "source": ".sources/0005-local.md",
+    "prompt": ".prompts/0005-change.md",
+    "plan": ".todo/0005-tasks.md",
+    "evidence": ".todo/evidence/0005",
+    "diagnostics": ".todo/diagnostics/0005",
+    "screenshots": ".todo/screenshots/0005",
+    "attestations": ".todo/attestations/0005"
+  },
+  "created_at": "2026-09-04T18:27:12.038Z",
+  "updated_at": "2026-09-04T18:40:23.423Z"
+}
