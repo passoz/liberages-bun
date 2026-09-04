@@ -2,6 +2,32 @@ import { Hono } from "hono";
 
 export const governanceApp = new Hono();
 
-governanceApp.post("/api/jury/vote", (c) => {
-  return c.json({ success: true, message: "Vote accepted" }, 200);
+export interface JuryVote {
+  disputeId: string;
+  userId: string;
+  vote: string;
+  timestamp: number;
+}
+
+export const juryVotesStore: JuryVote[] = [];
+
+// SPEC section 9.3: Júri Popular
+// O Júri Popular, composto apenas pelos Anjos, vota em disputas de normas ou mudanças na comunidade.
+governanceApp.post("/api/jury/vote", async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  const { disputeId, userId, isAngel, vote } = body;
+
+  if (!isAngel) {
+    return c.json({ error: "Acesso negado: o Júri Popular é restrito aos Anjos da Comunidade." }, 403);
+  }
+
+  const voteEntry: JuryVote = {
+    disputeId,
+    userId,
+    vote,
+    timestamp: Date.now(),
+  };
+
+  juryVotesStore.push(voteEntry);
+  return c.json({ success: true, message: "Voto registrado com sucesso", vote: voteEntry }, 200);
 });

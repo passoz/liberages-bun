@@ -149,7 +149,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.7] Governança Comunitária: Júri Popular de Anjos
+### [x] [1.7] Governança Comunitária: Júri Popular de Anjos
 
 **Requirement:** FR-005
 **Depends on:** 1.6
@@ -166,7 +166,7 @@ N/A
 1. Implementar sistema de votação de disputas com trava de autorização para Anjos em `src/governance.ts`.
 
 **ACs:**
-- [ ] `bun test tests/governance_jury.test.ts` — allows Angel votes and blocks regular user votes with exit code 0.
+- [x] `bun test tests/governance_jury.test.ts` — allows Angel votes and blocks regular user votes with exit code 0.
 
 **Visual:** N/A
 
