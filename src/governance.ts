@@ -12,7 +12,6 @@ export interface JuryVote {
 export const juryVotesStore: JuryVote[] = [];
 
 // SPEC section 9.3: Júri Popular
-// O Júri Popular, composto apenas pelos Anjos, vota em disputas de normas ou mudanças na comunidade.
 governanceApp.post("/api/jury/vote", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { disputeId, userId, isAngel, vote } = body;
@@ -31,3 +30,8 @@ governanceApp.post("/api/jury/vote", async (c) => {
   juryVotesStore.push(voteEntry);
   return c.json({ success: true, message: "Voto registrado com sucesso", vote: voteEntry }, 200);
 });
+
+// Baseline stub for Task 1.8: Web of Trust
+export function checkWebOfTrustVerification(realFriendsCount: number): { isVerified: boolean; badgeColor?: string } {
+  return { isVerified: false };
+}
