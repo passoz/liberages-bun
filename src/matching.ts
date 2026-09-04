@@ -11,6 +11,9 @@ export function calculateFetishMatch(userFetishes: string[], candidateFetishes: 
   return (common.length / userFetishes.length) * 100;
 }
 
+// SPEC section 5.3:
+// 1. Localização primeiro (perfis mais próximos geograficamente aparecem antes)
+// 2. Compatibilidade depois (dentro do raio/distância, ordena por % de match)
 export function sortDeck(candidates: CandidateProfile[], userFetishes: string[]): CandidateProfile[] {
   return [...candidates].sort((a, b) => {
     if (a.distanceKm !== b.distanceKm) {
@@ -31,7 +34,24 @@ export interface Friendship {
 export const friendshipsStore: Friendship[] = [];
 export const likesStore = new Set<string>();
 
-export function recordLike(from: string, to: string, category: "real" | "virtual" = "virtual"): { matched: boolean; friendship?: Friendship } {
+// SPEC section 5.3: Match recíproco sugere/cria uma Friendship categorizada ('real' ou 'virtual')
+export function recordLike(
+  from: string,
+  to: string,
+  category: "real" | "virtual" = "virtual"
+): { matched: boolean; friendship?: Friendship } {
   likesStore.add(`${from}:${to}`);
+
+  const reciprocalKey = `${to}:${from}`;
+  if (likesStore.has(reciprocalKey)) {
+    const friendship: Friendship = {
+      user1: from,
+      user2: to,
+      category,
+    };
+    friendshipsStore.push(friendship);
+    return { matched: true, friendship };
+  }
+
   return { matched: false };
 }

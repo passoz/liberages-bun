@@ -173,7 +173,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.8] Cota de 30 Likes no Free e Geração de Amizade Mútua
+### [x] [1.8] Cota de 30 Likes no Free e Geração de Amizade Mútua
 
 **Requirement:** FR-007
 **Depends on:** 1.7
@@ -190,7 +190,7 @@ N/A
 1. Implementar registro de likes e criação de amizade pós-match em `src/matching.ts`.
 
 **ACs:**
-- [ ] `bun test tests/matching_likes.test.ts` — verifies mutual match friendship generation with exit code 0.
+- [x] `bun test tests/matching_likes.test.ts` — verifies mutual match friendship generation with exit code 0.
 
 **Visual:** N/A
 
