@@ -19,7 +19,6 @@ securityApp.get("/api/image/:id", (c) => {
 });
 
 // SPEC section 7.3: Modo Falso (Botão de Pânico)
-// Redireciona imediatamente para tela inócua de disfarce (Calculadora)
 securityApp.post("/api/panic", (c) => {
   return c.json({
     success: true,
@@ -28,18 +27,17 @@ securityApp.post("/api/panic", (c) => {
   }, 200);
 });
 
-// SPEC section 7.3: Modo Ghost (Premium com Temporizador)
-// Torna o usuário totalmente invisível do radar, da busca e de recomendações
+// SPEC section 7.3: Modo Ghost
 securityApp.post("/api/ghost", async (c) => {
   const body = await c.req.json().catch(() => ({}));
-  const { userId, durationMinutes } = body;
+  const { userId, durationMinutes, expiresAt: explicitExpiresAt } = body;
 
   if (!userId) {
     return c.json({ error: "userId obrigatório" }, 400);
   }
 
   const durationMs = (durationMinutes || 60) * 60 * 1000;
-  const expiresAt = Date.now() + durationMs;
+  const expiresAt = explicitExpiresAt ?? (Date.now() + durationMs);
 
   ghostUsersStore.set(userId, expiresAt);
 
@@ -51,12 +49,7 @@ securityApp.post("/api/ghost", async (c) => {
   }, 200);
 });
 
+// Baseline stub for Task 1.5: does NOT check timer expiration (stays ghost permanently)
 export function isUserGhost(userId: string): boolean {
-  const expiresAt = ghostUsersStore.get(userId);
-  if (!expiresAt) return false;
-  if (Date.now() > expiresAt) {
-    ghostUsersStore.delete(userId);
-    return false;
-  }
-  return true;
+  return ghostUsersStore.has(userId);
 }
