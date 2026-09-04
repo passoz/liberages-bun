@@ -11,7 +11,7 @@
 ## Global gates
 N/A
 
-### [ ] [1.1] Onboarding em Camadas (Soft Gate Leitura e Hard Gate Escrita)
+### [x] [1.1] Onboarding em Camadas (Soft Gate Leitura e Hard Gate Escrita)
 
 **Requirement:** FR-001
 **Depends on:** 0001/1.1
@@ -29,7 +29,7 @@ N/A
 2. Implementar endpoint de verificação de idade gerando hash e descartando documento original.
 
 **ACs:**
-- [ ] `bun test tests/onboarding.test.ts` — validates gate transitions successfully with exit code 0.
+- [x] `bun test tests/onboarding.test.ts` — validates gate transitions successfully with exit code 0.
 
 **Visual:** N/A
 
