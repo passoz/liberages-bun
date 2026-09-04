@@ -55,3 +55,8 @@ export function recordLike(
 
   return { matched: false };
 }
+
+// Baseline stub for Task 1.9: does not enforce daily swipe quota
+export function processSwipe(userId: string, targetId: string, isPremium: boolean): { allowed: boolean; reason?: string } {
+  return { allowed: true };
+}
