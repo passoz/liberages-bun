@@ -265,7 +265,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.12] Telas SSR do MVP em pt-BR via Hono JSX
+### [x] [1.12] Telas SSR do MVP em pt-BR via Hono JSX
 
 **Requirement:** FR-010
 **Depends on:** 1.1
@@ -282,7 +282,7 @@ N/A
 1. Implementar templates de visualização SSR em `src/views.ts` integrando as rotas da interface.
 
 **ACs:**
-- [ ] `bun test tests/views.test.ts` — confirms all MVP pages render with HTTP 200 in pt-BR with exit code 0.
+- [x] `bun test tests/views.test.ts` — confirms all MVP pages render with HTTP 200 in pt-BR with exit code 0.
 
 **Visual:** N/A
 
