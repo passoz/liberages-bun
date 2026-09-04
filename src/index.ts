@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { getCookie } from "hono/cookie";
+import { getCookie, deleteCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { sqlite } from "../db/index";
 import { registerShutdownHook, gracefulShutdown } from "./server";
@@ -70,20 +70,33 @@ app.route("/", webViewsRoutes);
 // Home Dashboard
 app.get("/", async (c) => {
   const token = getCookie(c, "auth_token");
-  if (!token) {
-    // Unauthenticated landing
+  let payload: any = null;
+
+  if (token) {
+    try {
+      payload = await verify(token, JWT_SECRET, "HS256");
+    } catch {
+      // Clear invalid, malformed, or expired cookie to prevent redirect loop
+      deleteCookie(c, "auth_token", { path: "/" });
+      payload = null;
+    }
+  }
+
+  if (!payload || !payload.sub) {
+    // Unauthenticated landing page (HTTP 200)
     return c.html(
       renderLayout(
         "Bem-vindo",
         html`
           <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
-            <h1 style="color: var(--accent); margin-bottom: 1rem;">Bem-vindo ao Liberages</h1>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+            <h1 style="color: var(--accent-crimson); margin-bottom: 1rem;">Bem-vindo ao Liberages</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
               A rede social e mapa interativo prioritário para a comunidade liberal com privacidade total.
             </p>
             <div style="display: flex; justify-content: center; gap: 1rem;">
-              <a href="/feed" class="btn">Explorar Feed</a>
-              <a href="/mapa" class="btn" style="background: #34495e;">Ver Mapa</a>
+              <a href="/login" class="btn">Entrar com PIN</a>
+              <a href="/feed" class="btn btn-secondary">Explorar Feed</a>
+              <a href="/mapa" class="btn btn-secondary">Ver Mapa</a>
             </div>
           </div>
         `
@@ -92,30 +105,25 @@ app.get("/", async (c) => {
     );
   }
 
-  try {
-    const payload = await verify(token, JWT_SECRET, "HS256");
-    return c.html(
-      renderLayout(
-        "Painel Liberages",
-        html`
-          <div class="card">
-            <h1>Painel Liberages</h1>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">
-              Conectado como ID: <strong>${payload.sub}</strong> (${payload.role})
-            </p>
-            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-              <a href="/feed" class="btn">Feed do Fotolog</a>
-              <a href="/swipe" class="btn" style="background: #27ae60;">Deck de Swipe</a>
-              <a href="/carteira" class="btn" style="background: #8e44ad;">Minha Carteira</a>
-            </div>
+  return c.html(
+    renderLayout(
+      "Painel Liberages",
+      html`
+        <div class="card">
+          <h1>Painel Liberages</h1>
+          <p style="color: var(--text-muted); margin-top: 0.5rem;">
+            Conectado como ID: <strong>${payload.sub}</strong> (${payload.role})
+          </p>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <a href="/feed" class="btn">Feed do Fotolog</a>
+            <a href="/swipe" class="btn" style="background: #27ae60;">Deck de Swipe</a>
+            <a href="/carteira" class="btn" style="background: #8e44ad;">Minha Carteira</a>
           </div>
-        `
-      ),
-      200
-    );
-  } catch {
-    return c.redirect("/");
-  }
+        </div>
+      `
+    ),
+    200
+  );
 });
 
 // Register SQLite cleanup on graceful shutdown

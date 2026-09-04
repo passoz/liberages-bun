@@ -3,6 +3,20 @@ import { app } from "../src/index";
 import { searchService } from "../src/modules/search/search.service";
 
 describe("Liberages Modular Monolith Full Application Integration", () => {
+  test("handles invalid/expired auth cookie gracefully without redirect loop (HTTP 200)", async () => {
+    const res = await app.request("/", {
+      headers: {
+        Cookie: "auth_token=some-old-invalid-token-causing-loop",
+      },
+    });
+
+    // Must return 200 and NOT redirect (302) to prevent ERR_TOO_MANY_REDIRECTS
+    expect(res.status).toBe(200);
+    expect(res.headers.get("set-cookie")).toContain("auth_token=;");
+    const html = await res.text();
+    expect(html).toContain("Bem-vindo ao Liberages");
+  });
+
   test("responds to health checks /healthz and /readyz", async () => {
     const health = await app.request("/healthz");
     expect(health.status).toBe(200);
