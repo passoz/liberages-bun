@@ -126,7 +126,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.6] Spaces de Comunidade: Fóruns e Sub-comunidades Anônimas
+### [x] [1.6] Spaces de Comunidade: Fóruns e Sub-comunidades Anônimas
 
 **Requirement:** FR-004
 **Depends on:** 0004/1.2
@@ -143,7 +143,7 @@ N/A
 1. Implementar estrutura unificada de Spaces em `src/spaces.ts`.
 
 **ACs:**
-- [ ] `bun test tests/spaces.test.ts` — verifies public and anonymous posts with exit code 0.
+- [x] `bun test tests/spaces.test.ts` — verifies public and anonymous posts with exit code 0.
 
 **Visual:** N/A
 
