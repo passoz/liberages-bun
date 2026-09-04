@@ -35,7 +35,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.2] Expiração Imediata em Tentativa de Acesso Concorrente
+### [x] [1.2] Expiração Imediata em Tentativa de Acesso Concorrente
 
 **Requirement:** EC-001
 **Depends on:** 1.1
@@ -52,7 +52,7 @@ N/A
 1. Adicionar trava atômica de consumo na consulta de visualização de mídia efêmera.
 
 **ACs:**
-- [ ] `bun test tests/concurrency.test.ts` — enforces single view consumption under concurrent requests with exit code 0.
+- [x] `bun test tests/concurrency.test.ts` — enforces single view consumption under concurrent requests with exit code 0.
 
 **Visual:** N/A
 
