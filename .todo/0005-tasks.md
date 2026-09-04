@@ -11,7 +11,7 @@
 ## Global gates
 N/A
 
-### [ ] [1.1] Chat DM Privado em Tempo Real
+### [x] [1.1] Chat DM Privado em Tempo Real
 
 **Requirement:** FR-001
 **Depends on:** 0004/1.8
@@ -28,7 +28,7 @@ N/A
 1. Implementar canal de mensageria em `src/chat.ts` com validação de match mútuo.
 
 **ACs:**
-- [ ] `bun test tests/chat.test.ts` — verifies message exchange between matched users with exit code 0.
+- [x] `bun test tests/chat.test.ts` — verifies message exchange between matched users with exit code 0.
 
 **Visual:** N/A
 
