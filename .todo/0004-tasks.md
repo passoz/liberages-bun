@@ -242,7 +242,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.11] Token Wallet Fechada (Closed-Loop)
+### [x] [1.11] Token Wallet Fechada (Closed-Loop)
 
 **Requirement:** FR-009
 **Depends on:** 1.1
@@ -259,7 +259,7 @@ N/A
 1. Implementar ledger de Token Wallet com regras de bloqueio de saída fiat em `src/wallet.ts`.
 
 **ACs:**
-- [ ] `bun test tests/wallet.test.ts` — verifies credit and disallowed operations with exit code 0.
+- [x] `bun test tests/wallet.test.ts` — verifies credit and disallowed operations with exit code 0.
 
 **Visual:** N/A
 
