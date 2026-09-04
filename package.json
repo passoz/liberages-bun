@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "drizzle-orm": "^0.45.2",
-    "hono": "^4.13.5"
+    "hono": "^4.13.5",
+    "uuidv7": "^1.2.1"
   },
   "devDependencies": {
     "@types/bun": "^1.4.1",
