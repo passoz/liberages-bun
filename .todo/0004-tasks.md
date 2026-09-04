@@ -196,7 +196,7 @@ N/A
 
 **Documentation:** N/A
 
-### [ ] [1.9] Bloqueio ao Atingir Cota Diária de 30 Likes no Free
+### [x] [1.9] Bloqueio ao Atingir Cota Diária de 30 Likes no Free
 
 **Requirement:** SC-001
 **Depends on:** 1.8
@@ -213,7 +213,7 @@ N/A
 1. Adicionar validador de cota diária de likes no processador de swipe em `src/matching.ts`.
 
 **ACs:**
-- [ ] `bun test tests/matching_quota.test.ts` — verifies 31st like rejection with exit code 0.
+- [x] `bun test tests/matching_quota.test.ts` — verifies 31st like rejection with exit code 0.
 
 **Visual:** N/A
 

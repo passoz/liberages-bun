@@ -56,7 +56,40 @@ export function recordLike(
   return { matched: false };
 }
 
-// Baseline stub for Task 1.9: does not enforce daily swipe quota
-export function processSwipe(userId: string, targetId: string, isPremium: boolean): { allowed: boolean; reason?: string } {
+interface UserSwipeRecord {
+  date: string;
+  count: number;
+}
+
+const dailySwipesStore = new Map<string, UserSwipeRecord>();
+
+// SPEC section 5.3: Limites de Swipe (Monetização)
+// Usuários Free possuem cota diária de likes (30/dia).
+// Usuários Premium possuem likes ilimitados.
+export function processSwipe(
+  userId: string,
+  targetId: string,
+  isPremium: boolean
+): { allowed: boolean; reason?: string } {
+  if (isPremium) {
+    return { allowed: true };
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const record = dailySwipesStore.get(userId);
+
+  if (!record || record.date !== today) {
+    dailySwipesStore.set(userId, { date: today, count: 1 });
+    return { allowed: true };
+  }
+
+  if (record.count >= 30) {
+    return {
+      allowed: false,
+      reason: "Cota atingida: limite de 30 likes/dia no plano Free. Seja Premium para likes ilimitados.",
+    };
+  }
+
+  record.count += 1;
   return { allowed: true };
 }
