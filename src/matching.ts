@@ -11,9 +11,6 @@ export function calculateFetishMatch(userFetishes: string[], candidateFetishes: 
   return (common.length / userFetishes.length) * 100;
 }
 
-// SPEC section 5.3:
-// 1. Localização primeiro (perfis mais próximos geograficamente aparecem antes)
-// 2. Compatibilidade depois (dentro do raio/distância, ordena por % de match)
 export function sortDeck(candidates: CandidateProfile[], userFetishes: string[]): CandidateProfile[] {
   return [...candidates].sort((a, b) => {
     if (a.distanceKm !== b.distanceKm) {
@@ -23,4 +20,18 @@ export function sortDeck(candidates: CandidateProfile[], userFetishes: string[])
     const matchB = calculateFetishMatch(userFetishes, b.fetishes);
     return matchB - matchA;
   });
+}
+
+export interface Friendship {
+  user1: string;
+  user2: string;
+  category: "real" | "virtual";
+}
+
+export const friendshipsStore: Friendship[] = [];
+export const likesStore = new Set<string>();
+
+export function recordLike(from: string, to: string, category: "real" | "virtual" = "virtual"): { matched: boolean; friendship?: Friendship } {
+  likesStore.add(`${from}:${to}`);
+  return { matched: false };
 }
