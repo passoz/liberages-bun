@@ -1,0 +1,10 @@
+node_modules/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+.todo/evidence/
+.todo/diagnostics/
+.todo/screenshots/
+.todo/attestations/
+.env
