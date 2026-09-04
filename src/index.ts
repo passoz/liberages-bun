@@ -126,4 +126,9 @@ registerShutdownHook(() => {
   }
 });
 
-export default app;
+const port = Number(process.env.PORT) || 3333;
+
+export default {
+  port,
+  fetch: app.fetch,
+};
