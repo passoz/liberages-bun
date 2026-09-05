@@ -9,15 +9,20 @@ export function createThrottleMiddleware(maxAttempts = 5, windowMs = 60 * 1000):
   const attempts = new Map<string, AttemptRecord>();
 
   return async (c, next) => {
-    const key = c.req.header("x-forwarded-for") || "local-client";
-    const now = Date.now();
+    const key =
+      c.req.header("cf-connecting-ip") ||
+      c.req.header("x-real-ip") ||
+      c.req.header("x-forwarded-for")?.split(",")[0].trim() ||
+      "local-client";
 
+    const now = Date.now();
     const record = attempts.get(key);
+
     if (record) {
       if (now > record.resetAt) {
         attempts.delete(key);
       } else if (record.count >= maxAttempts) {
-        return c.json({ error: "Too Many Requests" }, 429);
+        return c.json({ error: "Too Many Requests - Muitas tentativas. Tente novamente mais tarde." }, 429);
       }
     }
 

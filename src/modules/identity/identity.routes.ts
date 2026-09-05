@@ -5,11 +5,14 @@ import { identityService } from "./identity.service";
 import { userRepository } from "./user.repository";
 import { JWT_SECRET } from "../../auth";
 import { getRequestBody } from "../../shared/request";
+import { createThrottleMiddleware } from "../../throttle";
 
 export const identityRoutes = new Hono();
 
-// PIN-First Login
-identityRoutes.post("/login/pin", async (c) => {
+const loginThrottle = createThrottleMiddleware(5, 60 * 1000);
+
+// PIN-First Login (SEC-06 & EC-001 throttle protection)
+identityRoutes.post("/login/pin", loginThrottle, async (c) => {
   const body = await getRequestBody(c);
   const { pin, userId } = body;
   const isForm = !c.req.header("content-type")?.includes("application/json");
@@ -20,7 +23,9 @@ identityRoutes.post("/login/pin", async (c) => {
   }
 
   const user = userId ? userRepository.findById(userId) : null;
-  const isValid = identityService.verifyPin(user?.pin, pin);
+  // If specific userId is requested, user must exist and have valid PIN (no default fallback)
+  const isDefaultDeviceAllowed = !userId;
+  const isValid = identityService.verifyPin(user?.pin, pin, isDefaultDeviceAllowed);
 
   if (!isValid) {
     if (isForm) return c.redirect("/login?error=PIN+incorreto");

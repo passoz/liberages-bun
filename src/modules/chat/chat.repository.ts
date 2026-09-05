@@ -1,5 +1,5 @@
 import { and, eq, or } from "drizzle-orm";
-import { db } from "../../../db/index";
+import { db, sqlite } from "../../../db/index";
 import { chatMessages, ephemeralMedia } from "../../../db/schema";
 import { generateId } from "../../shared/uuid";
 
@@ -45,8 +45,16 @@ export class ChatRepository {
     if (!item) return { status: "not_found" };
     if (item.consumed === 1) return { status: "already_consumed" };
 
-    // Atomic update
-    db.update(ephemeralMedia).set({ consumed: 1 }).where(eq(ephemeralMedia.id, id)).run();
+    // Atomic test-and-set query that wipes data payload on disk upon consumption (SEC-08)
+    const updateResult = sqlite.run(
+      "UPDATE ephemeral_media SET consumed = 1, data = '[DESTRUCTED]' WHERE id = ? AND consumed = 0",
+      [id]
+    );
+
+    if (updateResult.changes === 0) {
+      return { status: "already_consumed" };
+    }
+
     return { status: "found", data: item.data };
   }
 }

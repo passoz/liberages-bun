@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { spotRepository } from "./spot.repository";
 import { checkinRepository } from "./checkin.repository";
 import { getRequestBody } from "../../shared/request";
+import { getAuthenticatedUser } from "../../shared/auth";
 
 export const radarRoutes = new Hono();
 
@@ -23,13 +24,13 @@ radarRoutes.get("/spots", (c) => {
   return c.json({ spots: allSpots });
 });
 
-// Dynamic check-in with enforced TTL (1h to 4h)
+// Dynamic check-in with enforced TTL (1h to 4h) - SEC-07
 radarRoutes.post("/checkin", async (c) => {
   const body = await getRequestBody(c);
+  const authUser = await getAuthenticatedUser(c);
   const spotId = body?.spotId;
   const ttlHours = Number(body?.ttlHours);
-  const userId = body?.userId;
-  const expiresAt = body?.expiresAt ? Number(body.expiresAt) : undefined;
+  const userId = authUser?.id || body?.userId || "anon-user";
   const isForm = !c.req.header("content-type")?.includes("application/json");
 
   if (!spotId || isNaN(ttlHours) || ttlHours < 1 || ttlHours > 4) {
@@ -37,7 +38,20 @@ radarRoutes.post("/checkin", async (c) => {
     return c.json({ error: "TTL obrigatório entre 1h e 4h" }, 400);
   }
 
-  const checkin = checkinRepository.create(userId || "anon-user", spotId, ttlHours, expiresAt);
+  // Server-computed TTL (SEC-07): Client cannot extend beyond ttlHours window
+  const now = Date.now();
+  const maxExpiresAt = now + ttlHours * 3600 * 1000;
+  let expiresAt = maxExpiresAt;
+
+  // Only allow past expiration in non-production for testing TTL expiration
+  if (process.env.NODE_ENV !== "production" && body?.expiresAt) {
+    const requested = Number(body.expiresAt);
+    if (!isNaN(requested)) {
+      expiresAt = Math.min(requested, maxExpiresAt);
+    }
+  }
+
+  const checkin = checkinRepository.create(userId, spotId, ttlHours, expiresAt);
   if (isForm) return c.redirect(`/mapa?success=Check-in+confirmado+por+${ttlHours}h`);
 
   return c.json({

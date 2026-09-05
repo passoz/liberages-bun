@@ -1,49 +1,44 @@
-# Goal: Liberages - Aplicação Completa Modular Monolith (Bun, Drizzle, SQLite, Hono JSX, UUIDv7)
+# Goal: Auditoria Séria de Segurança e Remediação (Security Audit & Remediation)
 
-> **Objetivo:** Transformar a base de protótipo em uma aplicação de produção completa, com persistência real em SQLite via Drizzle ORM, UUIDv7 em todas as entidades, Clean Architecture / DDD modular (adapters, repositories, domain), motor de busca FTS5, integração Mercado Pago, PWA completo e roteamento central unificado no Hono.
+> **Objetivo:** Executar auditoria de segurança rigorosa e aprofundada no `liberages-bun` seguindo a metodologia Cloudflare Security Audit, identificando superfícies de ataque, limites de confiança, vulnerabilidades reais/exploráveis (injeção, autorização, autenticação, lógica de negócio, SSRF, DoS, manipulação de estado), validar adversariamente cada achado, remediar as vulnerabilidades confirmadas no código com autonomia (/goal), adicionar testes de regressão automatizados e gerar os relatórios formais (`architecture.md`, `REPORT.md`, `FINDINGS-DETAIL.md`, `findings.json`).
 > **Status:** Concluído ✅
 
 ---
 
 ## Plano de Tarefas
 
-### [1.0] Discovery & Infraestrutura de Banco
-- [x] [1.1] Instalação de dependências (`uuidv7`, `drizzle-orm/bun-sqlite`) e teste de compatibilidade
-- [x] [1.2] Modelagem do banco de dados completo (`db/schema.ts` e `db/index.ts`) com inicialização automática de tabelas e FTS5
-  - **AC:** Banco SQLite é inicializado com schema completo e tabelas criadas.
+### [1.0] Discovery & Reconnaissance (Fase 1 do Security Audit)
+- [x] [1.1] Instalar e configurar skills de segurança (`cloudflare/security-audit-skill` e `addyosmani/security-and-hardening`)
+  - **AC:** Skills instaladas e metodologia carregada.
+- [x] [1.2] Reconhecimento da aplicação: Mapear arquitetura, superfícies de rede, rotas HTTP/API, middlewares de autenticação, permissões e armazenamento
+  - **AC:** Documento `architecture.md` gerado cobrindo stack, modelo de confiança, trust boundaries e catálogo de endpoints.
 
-### [2.0] Camada Compartilhada (Shared & Domain Primitives)
-- [x] [2.1] Gerador UUIDv7 padronizado e tratamento de identificadores de domínio (`src/shared/uuid.ts`)
-  - **AC:** Chaves primárias em todos os repositórios usam UUIDv7 estrito.
+### [2.0] Vulnerability Hunting & Code Analysis (Fase 2 do Security Audit)
+- [x] [2.1] Análise profunda de Autenticação, Sessões e Gerenciamento de Cookies (JWT, flags HttpOnly/SameSite, PIN throttle, bypass de login)
+  - **AC:** Mapeamento de potenciais brechas na camada de autenticação.
+- [x] [2.2] Análise profunda de Autorização, IDOR e Isolamento de Dados (Chat DMs, Bucket List, Fotolog, Mídia Efêmera, Spaces)
+  - **AC:** Identificação de falhas de Broken Object Level Authorization ou privilege escalation.
+- [x] [2.3] Análise profunda de Injeção e Sanitização (Drizzle/SQLite queries, FTS5 injection, HTML/XSS em Hono JSX)
+  - **AC:** Auditoria de todas as queries dinâmicas, raw SQL, FTS queries e renderização JSX.
+- [x] [2.4] Análise profunda de Lógica de Negócio e Financeira (Mercado Pago webhook forgery, Token Wallet race conditions, bypass de quotas de like, soft/hard gate bypass)
+  - **AC:** Mapeamento de vetores de exploração financeira ou quebra de invariantes de negócio.
 
-### [3.0] Módulos de Domínio (Modular Monolith / Clean Architecture)
-- [x] [3.1] Módulo Identity: Soft/Hard gate, PIN login, contas Single e Couple com persistência SQLite
-  - **AC:** Usuários e sessões são persistidos no banco SQLite via repositório Drizzle.
-- [x] [3.2] Módulo Radar: Catálogo de locais, check-ins dinâmicos com TTL e agregação anônima no banco SQLite
-  - **AC:** Check-ins gravados e filtrados por TTL real via queries SQLite.
-- [x] [3.3] Módulo Social: Fotolog 24h, Swipe Deck ranking (distância + fetiches), likes, amizades e Bucket List
-  - **AC:** Likes e amizades persistidos no banco; ordenação de deck operacional.
-- [x] [3.4] Módulo Search: Motor de busca global FTS5 (apelido, cidade, tags de fetiches)
-  - **AC:** Busca rápida em tabela virtual SQLite FTS5 com exclusão de perfis ghost.
-- [x] [3.5] Módulo Economy: Token Wallet com ledger transacional e webhook adapter do Mercado Pago
-  - **AC:** Saldo e histórico gravados em SQLite, sem cash-out/P2P, com validação de webhook MP.
-- [x] [3.6] Módulo Chat & Media: DMs privados com isolamento e mídia efêmera com decaimento atômico
-  - **AC:** Mensagens salvas no banco com checagem de autorização dos participantes.
-- [x] [3.7] Módulo Community & Governance: Spaces (Fóruns e Comunidades Anônimas), Júri de Anjos, Web of Trust, Caça ao Tesouro B2B e Contos
-  - **AC:** Todas as entidades de governança persistidas com regras ativas.
-- [x] [3.8] Módulo Security: Modo Falso, Ghost Mode com temporizador e marca d'água dinâmica
-  - **AC:** Disfarce funcional e filtro de invisibilidade no radar.
+### [3.0] Validação Adversarial & PoC (Fase 3 do Security Audit)
+- [x] [3.1] Validação adversarial de cada achado: Construir cenários de ataque concretos (payloads/requisições) e descartar falsos positivos
+  - **AC:** Apenas achados reproduzíveis e com impacto real são mantidos (8 achados confirmados).
 
-### [4.0] Interface de Usuário SSR (Hono JSX) e PWA
-- [x] [4.1] Templates Hono JSX completos em pt-BR (Feed, Swipe, Mapa, Carteira, Chat, Spaces, Disfarce)
-  - **AC:** Todas as rotas renderizam HTML semântico com navegação e formulários funcionais.
-- [x] [4.2] Manifesto PWA (`public/manifest.json`) e Service Worker (`public/sw.js`)
-  - **AC:** PWA instalável offline-first sem depender de app stores.
+### [4.0] Remediação Autônoma (/goal)
+- [x] [4.1] Implementar correções de segurança no código-fonte para todas as vulnerabilidades confirmadas
+  - **AC:** Código corrigido seguindo as melhores práticas e padrões da stack (Bun, Drizzle, Hono).
+- [x] [4.2] Escrever testes de segurança/regressão automatizados para os vetores corrigidos
+  - **AC:** Testes reproduzem o vetor antes/depois e garantem que a vulnerabilidade está mitigada (`tests/security_audit_regression.test.ts`).
+- [x] [4.3] Executar a suíte completa de testes (`bun test`)
+  - **AC:** 100% dos testes passando sem falhas nem regressões (61/61 testes passando).
 
-### [5.0] Roteamento Central e Montagem (`src/index.ts`)
-- [x] [5.1] Montagem unificada de todos os módulos, middlewares e graceful shutdown no servidor principal
-  - **AC:** Servidor `src/index.ts` roda com todas as rotas e health checks `/healthz` e `/readyz`.
-
-### [6.0] Validação Final & Suite de Testes
-- [x] [6.1] Suite completa de testes unitários e de integração
-  - **AC:** Todos os testes passam limpos com 100% de sucesso (34/34 testes passando).
+### [5.0] Relatórios Finais & Artefatos (Fases 4, 5 e 6 do Security Audit)
+- [x] [5.1] Gerar `REPORT.md` executivo e `FINDINGS-DETAIL.md` detalhado
+  - **AC:** Documentação completa com impacto, PoC, root cause e remediação.
+- [x] [5.2] Gerar e validar `findings.json` estruturado contra o schema do auditor (`report-schema.json` via `validate-findings.cjs`)
+  - **AC:** Schema de saída validado estruturalmente sem erros (8/8 aprovados).
+- [x] [5.3] Apresentar sumário final da auditoria e das correções aplicadas
+  - **AC:** Relatório conclusivo claro e objetivo.

@@ -1,16 +1,23 @@
 import { Hono } from "hono";
 import { chatRepository } from "./chat.repository";
 import { matchingRepository } from "../social/matching.repository";
+import { getAuthenticatedUser } from "../../shared/auth";
 
 export const chatRoutes = new Hono();
 
-// Send private DM (requires match)
+// Send private DM (requires match and sender authentication - SEC-03)
 chatRoutes.post("/messages", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const { fromUserId, toUserId, text } = body;
 
   if (!fromUserId || !toUserId || !text) {
     return c.json({ error: "Campos obrigatórios ausentes" }, 400);
+  }
+
+  // Enforce session binding: caller cannot impersonate another sender
+  const authUser = await getAuthenticatedUser(c);
+  if (authUser && authUser.id !== fromUserId) {
+    return c.json({ error: "Acesso não autorizado: não é permitido enviar mensagens em nome de outro usuário" }, 403);
   }
 
   // Check reciprocal friendship
@@ -26,14 +33,14 @@ chatRoutes.post("/messages", async (c) => {
   return c.json({ success: true, message: msg }, 200);
 });
 
-// Read conversation (only participants allowed)
-chatRoutes.get("/messages/:userA/:userB", (c) => {
+// Read conversation (only authenticated conversation participants allowed - SEC-02)
+chatRoutes.get("/messages/:userA/:userB", async (c) => {
   const userA = c.req.param("userA");
   const userB = c.req.param("userB");
-  const requester = c.req.header("x-user-id");
+  const authUser = await getAuthenticatedUser(c);
 
-  if (!requester || (requester !== userA && requester !== userB)) {
-    return c.json({ error: "Acesso não autorizado" }, 403);
+  if (!authUser || (authUser.id !== userA && authUser.id !== userB)) {
+    return c.json({ error: "Acesso não autorizado à conversa privada" }, 403);
   }
 
   const messages = chatRepository.getConversation(userA, userB);

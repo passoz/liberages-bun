@@ -9,3 +9,5 @@ node_modules/
 .todo/attestations/
 .env
 .screenshots/
+.agents/
+.claude/

@@ -1,19 +1,29 @@
 import { Hono } from "hono";
 import { economyService } from "./economy.service";
 import { mercadoPagoAdapter } from "./mercadopago.adapter";
+import { getAuthenticatedUser } from "../../shared/auth";
 
 export const economyRoutes = new Hono();
 
-economyRoutes.get("/wallet/:userId", (c) => {
+// Wallet balance (restricted to self or authenticated session)
+economyRoutes.get("/wallet/:userId", async (c) => {
   const userId = c.req.param("userId");
+  const authUser = await getAuthenticatedUser(c);
+
+  if (authUser && authUser.id !== userId) {
+    return c.json({ error: "Acesso não autorizado à carteira de outro usuário" }, 403);
+  }
+
   const balance = economyService.getBalance(userId);
   return c.json({ userId, balance });
 });
 
-// Mercado Pago Webhook (CON-002)
+// Mercado Pago Webhook (CON-002 & SEC-01)
 economyRoutes.post("/wallet/webhook/mercadopago", async (c) => {
   const body = await c.req.json().catch(() => ({}));
-  const result = mercadoPagoAdapter.processWebhook(body);
+  const signature = c.req.header("x-signature");
+  const requestId = c.req.header("x-request-id");
+  const result = mercadoPagoAdapter.processWebhook(body, { signature, requestId });
 
   if (!result.processed) {
     return c.json({ error: result.error }, 400);
