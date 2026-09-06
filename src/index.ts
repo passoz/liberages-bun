@@ -2,9 +2,11 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getCookie, deleteCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
-import { sqlite } from "../db/index";
+import { db, sqlite } from "../db/index";
+import { users } from "../db/schema";
 import { registerShutdownHook, gracefulShutdown } from "./server";
-import { JWT_SECRET, app as legacyAuthApp } from "./auth";
+import { auth, JWT_SECRET, app as legacyAuthApp } from "./auth";
+import { getAuthenticatedUser } from "./shared/auth";
 
 // Modular Monolith Domain Routes
 import { identityRoutes } from "./modules/identity/identity.routes";
@@ -40,16 +42,16 @@ app.get("/healthz", (c) => c.text("ok", 200));
 
 app.get("/readyz", (c) => {
   try {
-    // Ping SQLite to ensure database readiness
-    const ping = sqlite.query("SELECT 1 as alive").get() as { alive: number };
-    if (ping?.alive === 1) {
-      return c.json({ status: "ready", database: "connected" }, 200);
-    }
-    return c.json({ status: "not_ready", database: "error" }, 503);
+    // Ping SQLite to ensure database readiness via Drizzle ORM
+    db.select().from(users).limit(1).all();
+    return c.json({ status: "ready", database: "connected" }, 200);
   } catch (err: any) {
     return c.json({ status: "not_ready", error: err.message }, 503);
   }
 });
+
+// Mount Better Auth endpoints
+app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 // Mount Legacy compatibility routes
 app.route("/", legacyAuthApp);
@@ -69,20 +71,13 @@ app.route("/", webViewsRoutes);
 
 // Home Dashboard
 app.get("/", async (c) => {
-  const token = getCookie(c, "auth_token");
-  let payload: any = null;
+  const authUser = await getAuthenticatedUser(c);
 
-  if (token) {
-    try {
-      payload = await verify(token, JWT_SECRET, "HS256");
-    } catch {
-      // Clear invalid, malformed, or expired cookie to prevent redirect loop
-      deleteCookie(c, "auth_token", { path: "/" });
-      payload = null;
-    }
-  }
+  if (!authUser || !authUser.id) {
+    // Clear invalid, malformed, or expired cookies to prevent redirect loop
+    deleteCookie(c, "auth_token", { path: "/" });
+    deleteCookie(c, "better-auth.session_token", { path: "/" });
 
-  if (!payload || !payload.sub) {
     // Unauthenticated landing page (HTTP 200)
     return c.html(
       renderLayout(
@@ -112,7 +107,7 @@ app.get("/", async (c) => {
         <div class="card">
           <h1>Painel Liberages</h1>
           <p style="color: var(--text-muted); margin-top: 0.5rem;">
-            Conectado como ID: <strong>${payload.sub}</strong> (${payload.role})
+            Conectado como ID: <strong>${authUser.id}</strong> (${authUser.role})
           </p>
           <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
             <a href="/feed" class="btn">Feed do Fotolog</a>

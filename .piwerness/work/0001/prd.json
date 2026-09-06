@@ -1,0 +1,31 @@
+{
+  "$schema": "../../../schemas/prd.schema.json",
+  "work_id": "0001",
+  "meta": {
+    "version": "1.0",
+    "created_at": "2026-09-06T16:41:43.568Z"
+  },
+  "title": "PRD de Migração da Autenticação para Better Auth",
+  "status": "approved",
+  "problem": "Necessidade de modernização da camada de autenticação para Better Auth utilizando Drizzle ORM sem quebrar PIN login ou SSR.",
+  "actors": [
+    "ACT-USER",
+    "ACT-OPERATOR"
+  ],
+  "scope": {
+    "inside": [
+      "Configuração do Better Auth com Drizzle Adapter para SQLite",
+      "Modelagem das tabelas user, session, account, verification em Drizzle",
+      "Integração do PIN login de 4 dígitos gerando sessão assinada Better Auth",
+      "Middleware getAuthenticatedUser resolvendo sessão Better Auth e fallback JWT",
+      "Suíte de testes de integração e regressão"
+    ],
+    "outside": [
+      "Substituição do Drizzle por Prisma ou Kysely",
+      "Alteração do runtime Bun ou do SQLite"
+    ]
+  },
+  "accepted_requirements": [
+    "REQ-AUTH-001"
+  ]
+}

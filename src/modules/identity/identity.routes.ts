@@ -1,9 +1,8 @@
 import { Hono } from "hono";
 import { setCookie, getCookie } from "hono/cookie";
-import { sign } from "hono/jwt";
 import { identityService } from "./identity.service";
 import { userRepository } from "./user.repository";
-import { JWT_SECRET } from "../../auth";
+import { createBetterAuthSession } from "../../auth";
 import { getRequestBody } from "../../shared/request";
 import { createThrottleMiddleware } from "../../throttle";
 
@@ -32,13 +31,10 @@ identityRoutes.post("/login/pin", loginThrottle, async (c) => {
     return c.json({ error: "PIN incorreto" }, 401);
   }
 
-  const payload = {
-    sub: user?.id || "user-session",
-    role: user?.accountType || "single",
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-  };
+  const authUserId = user?.id || "user-session";
+  const authUserRole = user?.accountType || "single";
+  const { token, sessionToken, signedSessionCookie } = await createBetterAuthSession(authUserId, authUserRole);
 
-  const token = await sign(payload, JWT_SECRET);
   setCookie(c, "auth_token", token, {
     path: "/",
     httpOnly: true,
@@ -46,8 +42,15 @@ identityRoutes.post("/login/pin", loginThrottle, async (c) => {
     maxAge: 60 * 60 * 24,
   });
 
+  setCookie(c, "better-auth.session_token", encodeURIComponent(signedSessionCookie), {
+    path: "/",
+    httpOnly: true,
+    sameSite: "Lax",
+    maxAge: 60 * 60 * 24 * 7,
+  });
+
   if (isForm) return c.redirect("/");
-  return c.json({ success: true, token, user });
+  return c.json({ success: true, token, sessionToken, user });
 });
 
 // Soft gate: 18+ auto-declaration gives read-only access

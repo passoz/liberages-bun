@@ -1,0 +1,12 @@
+{
+  "plan_version": "1.0",
+  "work_id": "0001",
+  "tasks": [
+    {
+      "id": "T-001",
+      "title": "Migrar autenticação para Better Auth com Drizzle ORM",
+      "contract_id": "CTR-T-001-V4",
+      "agent_role": "strong"
+    }
+  ]
+}

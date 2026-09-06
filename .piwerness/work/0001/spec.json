@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../schemas/system.schema.json",
+  "spec_version": "1.0",
+  "work_id": "0001",
+  "title": "Especificação Técnica de Autenticação Better Auth + Drizzle ORM",
+  "capabilities": [
+    {
+      "id": "CAP-AUTH-01",
+      "name": "Better Auth Drizzle Integration",
+      "description": "Autenticação moderna com adaptador Drizzle ORM nativo em SQLite",
+      "rules": [
+        "BR-AUTH-01: Zero raw SQL na autenticação",
+        "BR-AUTH-02: Gerenciamento de sessões persistidas em SQLite",
+        "BR-AUTH-03: Compatibilidade com PIN-First e fallback JWT"
+      ]
+    }
+  ]
+}

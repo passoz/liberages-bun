@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../schemas/tasks.schema.json",
+  "work_id": "0001",
+  "requirements": [
+    {
+      "id": "REQ-AUTH-001",
+      "title": "Migração para Better Auth com Drizzle Adapter",
+      "user_story": "Como usuário do sistema, quero autenticação segura e gerenciamento de sessão via Better Auth usando o Drizzle ORM.",
+      "acceptance_criteria": [
+        "Instância Better Auth configurada com drizzleAdapter e provider sqlite",
+        "Tabelas user, session, account, verification definidas como sqliteTable do Drizzle ORM",
+        "Suporte a endpoints /api/auth/* para get-session e autenticação de email",
+        "Zero queries SQL diretas em toda a esteira de autenticação",
+        "Suíte de testes de integração e E2E Playwright passando 100%"
+      ]
+    }
+  ]
+}

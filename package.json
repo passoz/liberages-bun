@@ -8,6 +8,7 @@
     "test:e2e": "bun test tests/e2e"
   },
   "dependencies": {
+    "better-auth": "^1.7.3",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.5",
     "uuidv7": "^1.2.1"

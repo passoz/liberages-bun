@@ -1,0 +1,19 @@
+{
+  "work_id": "0001",
+  "problem": "Autenticação baseada em JWT estático sem gerenciamento formal de sessão de banco de dados, necessitando migração para Better Auth com persistência estrita via Drizzle ORM.",
+  "actors": [
+    "ACT-USER",
+    "ACT-OPERATOR"
+  ],
+  "objectives": [
+    "Integrar Better Auth com Drizzle Adapter para SQLite",
+    "Manter login por PIN de 4 dígitos e sessão assinada",
+    "Eliminar qualquer SQL direto na camada de persistência de autenticação"
+  ],
+  "constraints": [
+    "Runtime Bun",
+    "Banco SQLite via Bun-sqlite nativo",
+    "ORM Drizzle estrito (zero raw SQL)",
+    "Framework Web Hono e SSR JSX"
+  ]
+}
